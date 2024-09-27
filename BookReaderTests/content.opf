@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package xmlns="http://www.idpf.org/2007/opf" unique-identifier="uuid_id" version="2.0">
+  <metadata xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:calibre="http://calibre.kovidgoyal.net/2009/metadata" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <meta name="calibre:series" content="Город в Нигде"/>
+    <dc:title>Темная материя</dc:title>
+    <dc:language>ru</dc:language>
+    <dc:subject>detective</dc:subject>
+    <dc:subject>sf</dc:subject>
+    <dc:subject>sf_etc</dc:subject>
+    <dc:subject>thriller</dc:subject>
+    <dc:publisher>Издательство «Э»</dc:publisher>
+    <meta name="calibre:timestamp" content="2017-02-28T11:49:55.219591+00:00"/>
+    <dc:contributor opf:role="bkp">calibre (2.80.0) [https://calibre-ebook.com]</dc:contributor>
+    <dc:creator opf:file-as="Unknown" opf:role="aut">Блейк Крауч</dc:creator>
+    <dc:description>Джейсон Дессен, выдающийся физик, некогда отказался от блестящей научной карьеры и стал обычным преподавателем в колледже. Теперь все его внимание отдано семье – любимым жене и сыну. Они для Джейсона важнее всего. И вдруг – это нелепое похищение… Неизвестный в маске напал на Дессена на улице, под дулом револьвера усадил его в машину, отвез к заброшенному зданию и ввел ему в вену непонятный препарат. Джейсон потерял сознание. А очнувшись, обнаружил себя окруженным массой людей; все они обращались к нему как к старому другу и наперебой поздравляли его с возвращением – и с тем, что его открытие наконец-то сработало. Вот только Дессен не знал никого из этих людей. И уж тем более не ведал, что за открытие совершил…</dc:description>
+    <dc:date>2017-02-15T00:00:00+00:00</dc:date>
+    <meta name="calibre:series_index" content="1"/>
+    <dc:identifier opf:scheme="ISBN">978-5-699-93644-1</dc:identifier>
+    <dc:identifier id="uuid_id" opf:scheme="uuid">13abf6d0-1319-4d2c-ac1a-2900fd1924e7</dc:identifier>
+    <meta name="cover" content="cover"/>
+  </metadata>
+  <manifest>
+    <item href="fb2_cover_calibre_mi.jpg" id="cover" media-type="image/jpeg"/>
+    <item href="index_split_000.xhtml" id="id327" media-type="application/xhtml+xml"/>
+    <item href="index_split_001.xhtml" id="id326" media-type="application/xhtml+xml"/>
+    <item href="index_split_002.xhtml" id="id325" media-type="application/xhtml+xml"/>
+    <item href="index_split_003.xhtml" id="id324" media-type="application/xhtml+xml"/>
+    <item href="index_split_004.xhtml" id="id323" media-type="application/xhtml+xml"/>
+    <item href="index_split_005.xhtml" id="id322" media-type="application/xhtml+xml"/>
+    <item href="index_split_006.xhtml" id="id321" media-type="application/xhtml+xml"/>
+    <item href="index_split_007.xhtml" id="id320" media-type="application/xhtml+xml"/>
+    <item href="index_split_008.xhtml" id="id319" media-type="application/xhtml+xml"/>
+    <item href="index_split_009.xhtml" id="id318" media-type="application/xhtml+xml"/>
+    <item href="index_split_010.xhtml" id="id317" media-type="application/xhtml+xml"/>
+    <item href="index_split_011.xhtml" id="id316" media-type="application/xhtml+xml"/>
+    <item href="index_split_012.xhtml" id="id315" media-type="application/xhtml+xml"/>
+    <item href="index_split_013.xhtml" id="id314" media-type="application/xhtml+xml"/>
+    <item href="index_split_014.xhtml" id="id313" media-type="application/xhtml+xml"/>
+    <item href="index_split_015.xhtml" id="id312" media-type="application/xhtml+xml"/>
+    <item href="index_split_016.xhtml" id="id311" media-type="application/xhtml+xml"/>
+    <item href="index_split_017.xhtml" id="id310" media-type="application/xhtml+xml"/>
+    <item href="index_split_018.xhtml" id="id39" media-type="application/xhtml+xml"/>
+    <item href="index_split_019.xhtml" id="id38" media-type="application/xhtml+xml"/>
+    <item href="index_split_020.xhtml" id="id37" media-type="application/xhtml+xml"/>
+    <item href="index_split_021.xhtml" id="id36" media-type="application/xhtml+xml"/>
+    <item href="index_split_022.xhtml" id="id35" media-type="application/xhtml+xml"/>
+    <item href="index_split_023.xhtml" id="id34" media-type="application/xhtml+xml"/>
+    <item href="index_split_024.xhtml" id="id33" media-type="application/xhtml+xml"/>
+    <item href="index_split_025.xhtml" id="id32" media-type="application/xhtml+xml"/>
+    <item href="index_split_026.xhtml" id="id31" media-type="application/xhtml+xml"/>
+    <item href="page_styles.css" id="page_css" media-type="text/css"/>
+    <item href="stylesheet.css" id="css" media-type="text/css"/>
+    <item href="titlepage.xhtml" id="titlepage" media-type="application/xhtml+xml"/>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="titlepage"/>
+    <itemref idref="id327"/>
+    <itemref idref="id326"/>
+    <itemref idref="id325"/>
+    <itemref idref="id324"/>
+    <itemref idref="id323"/>
+    <itemref idref="id322"/>
+    <itemref idref="id321"/>
+    <itemref idref="id320"/>
+    <itemref idref="id319"/>
+    <itemref idref="id318"/>
+    <itemref idref="id317"/>
+    <itemref idref="id316"/>
+    <itemref idref="id315"/>
+    <itemref idref="id314"/>
+    <itemref idref="id313"/>
+    <itemref idref="id312"/>
+    <itemref idref="id311"/>
+    <itemref idref="id310"/>
+    <itemref idref="id39"/>
+    <itemref idref="id38"/>
+    <itemref idref="id37"/>
+    <itemref idref="id36"/>
+    <itemref idref="id35"/>
+    <itemref idref="id34"/>
+    <itemref idref="id33"/>
+    <itemref idref="id32"/>
+    <itemref idref="id31"/>
+  </spine>
+  <guide>
+    <reference href="titlepage.xhtml" title="Cover" type="cover"/>
+  </guide>
+</package>

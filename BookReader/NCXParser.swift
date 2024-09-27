@@ -39,12 +39,10 @@ class NCXParser: NSObject, XMLParserDelegate {
     }
     
     // Начало элемента
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
         if elementName == "navPoint" {
-            // Извлекаем playOrder, если его нет, устанавливаем значение 0
             let playOrder = Int(attributeDict["playOrder"] ?? "0") ?? 0
             let navPoint = NavPoint(playOrder: playOrder, label: "", contentSrc: "")
             navPointStack.append(navPoint)
@@ -64,8 +62,7 @@ class NCXParser: NSObject, XMLParserDelegate {
     }
     
     // Конец элемента
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?) {
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "text" {
             if var currentNavPoint = navPointStack.last {
                 currentNavPoint.label = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -83,9 +80,7 @@ class NCXParser: NSObject, XMLParserDelegate {
         
         tempValue = ""
     }
-}
-
-extension NCXParser {
+    
     func flattenTOC() -> [NavPoint] {
         var flatTOC: [NavPoint] = []
         
@@ -100,7 +95,6 @@ extension NCXParser {
         
         flatten(navPoints: toc)
         
-        // Сортируем по playOrder
         flatTOC.sort { $0.playOrder < $1.playOrder }
         
         return flatTOC

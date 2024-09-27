@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+<head>
+<meta name="dtb:uid" content="9781451627305"/>
+<meta name="dtb:depth" content="1"/>
+<meta name="dtb:totalPageCount" content="0"/>
+<meta name="dtb:maxPageNumber" content="0"/>
+</head>
+<docTitle>
+<text>11/22/63</text>
+</docTitle>
+<navMap>
+<navPoint id="i1" playOrder="1">
+<navLabel>
+<text>Cover</text>
+</navLabel>
+<content src="xhtml/cover.html"/>
+</navPoint>
+<navPoint id="i1a" playOrder="2">
+<navLabel>
+<text>Description</text>
+</navLabel>
+<content src="xhtml/description.html"/>
+</navPoint>
+<navPoint id="i1b" playOrder="3">
+<navLabel>
+<text>Back Cover</text>
+</navLabel>
+<content src="xhtml/backcover.html"/>
+</navPoint>
+<navPoint id="i2" playOrder="4">
+<navLabel>
+<text>Title Page</text>
+</navLabel>
+<content src="xhtml/title.html"/>
+</navPoint>
+<navPoint id="i3" playOrder="5">
+<navLabel>
+<text>Copyright Page</text>
+</navLabel>
+<content src="xhtml/copy.html"/>
+</navPoint>
+<navPoint id="i4" playOrder="6">
+<navLabel>
+<text>Dedication</text>
+</navLabel>
+<content src="xhtml/ded.html"/>
+</navPoint>
+<navPoint id="i6" playOrder="7">
+<navLabel>
+<text>Contents</text>
+</navLabel>
+<content src="xhtml/toc.html"/>
+</navPoint>
+<navPoint id="i9" playOrder="8">
+<navLabel>
+<text>Part 1: Watershed Moment</text>
+</navLabel>
+<content src="xhtml/part1.html"/>
+<navPoint id="i10" playOrder="9">
+<navLabel>
+<text>Chapter 1</text>
+</navLabel>
+<content src="xhtml/ch01.html"/>
+</navPoint>
+<navPoint id="i11" playOrder="10">
+<navLabel>
+<text>Chapter 2</text>
+</navLabel>
+<content src="xhtml/ch02.html"/>
+</navPoint>
+<navPoint id="i12" playOrder="11">
+<navLabel>
+<text>Chapter 3</text>
+</navLabel>
+<content src="xhtml/ch03.html"/>
+</navPoint>
+<navPoint id="i13" playOrder="12">
+<navLabel>
+<text>Chapter 4</text>
+</navLabel>
+<content src="xhtml/ch04.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i14" playOrder="13">
+<navLabel>
+<text>Part 2: The Janitor&#8217;s Father</text>
+</navLabel>
+<content src="xhtml/part2.html"/>
+<navPoint id="i15" playOrder="14">
+<navLabel>
+<text>Chapter 5</text>
+</navLabel>
+<content src="xhtml/ch05.html"/>
+</navPoint>
+<navPoint id="i16" playOrder="15">
+<navLabel>
+<text>Chapter 6</text>
+</navLabel>
+<content src="xhtml/ch06.html"/>
+</navPoint>
+<navPoint id="i17" playOrder="16">
+<navLabel>
+<text>Chapter 7</text>
+</navLabel>
+<content src="xhtml/ch07.html"/>
+</navPoint>
+<navPoint id="i18" playOrder="17">
+<navLabel>
+<text>Chapter 8</text>
+</navLabel>
+<content src="xhtml/ch08.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i19" playOrder="18">
+<navLabel>
+<text>Part 3: Living in The Past</text>
+</navLabel>
+<content src="xhtml/part3.html"/>
+<navPoint id="i20" playOrder="19">
+<navLabel>
+<text>Chapter 9</text>
+</navLabel>
+<content src="xhtml/ch09.html"/>
+</navPoint>
+<navPoint id="i21" playOrder="20">
+<navLabel>
+<text>Chapter 10</text>
+</navLabel>
+<content src="xhtml/ch010.html"/>
+</navPoint>
+<navPoint id="i22" playOrder="21">
+<navLabel>
+<text>Chapter 11</text>
+</navLabel>
+<content src="xhtml/ch011.html"/>
+</navPoint>
+<navPoint id="i23" playOrder="22">
+<navLabel>
+<text>Chapter 12</text>
+</navLabel>
+<content src="xhtml/ch012.html"/>
+</navPoint>
+<navPoint id="i24" playOrder="23">
+<navLabel>
+<text>Chapter 13</text>
+</navLabel>
+<content src="xhtml/ch013.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i25" playOrder="24">
+<navLabel>
+<text>Part 4: Sadie and The General</text>
+</navLabel>
+<content src="xhtml/part4.html"/>
+<navPoint id="i26" playOrder="25">
+<navLabel>
+<text>Chapter 14</text>
+</navLabel>
+<content src="xhtml/ch014.html"/>
+</navPoint>
+<navPoint id="i27" playOrder="26">
+<navLabel>
+<text>Chapter 15</text>
+</navLabel>
+<content src="xhtml/ch015.html"/>
+</navPoint>
+<navPoint id="i28" playOrder="27">
+<navLabel>
+<text>Chapter 16</text>
+</navLabel>
+<content src="xhtml/ch016.html"/>
+</navPoint>
+<navPoint id="i29" playOrder="28">
+<navLabel>
+<text>Chapter 17</text>
+</navLabel>
+<content src="xhtml/ch017.html"/>
+</navPoint>
+<navPoint id="i30" playOrder="29">
+<navLabel>
+<text>Chapter 18</text>
+</navLabel>
+<content src="xhtml/ch018.html"/>
+</navPoint>
+<navPoint id="i31" playOrder="30">
+<navLabel>
+<text>Chapter 19</text>
+</navLabel>
+<content src="xhtml/ch019.html"/>
+</navPoint>
+<navPoint id="i32" playOrder="31">
+<navLabel>
+<text>Chapter 20</text>
+</navLabel>
+<content src="xhtml/ch020.html"/>
+</navPoint>
+<navPoint id="i33" playOrder="32">
+<navLabel>
+<text>Chapter 21</text>
+</navLabel>
+<content src="xhtml/ch021.html"/>
+</navPoint>
+<navPoint id="i34" playOrder="33">
+<navLabel>
+<text>Chapter 22</text>
+</navLabel>
+<content src="xhtml/ch022.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i35" playOrder="34">
+<navLabel>
+<text>Part 5: 11/22/63</text>
+</navLabel>
+<content src="xhtml/part5.html"/>
+<navPoint id="i36" playOrder="35">
+<navLabel>
+<text>Chapter 23</text>
+</navLabel>
+<content src="xhtml/ch023.html"/>
+</navPoint>
+<navPoint id="i37" playOrder="36">
+<navLabel>
+<text>Chapter 24</text>
+</navLabel>
+<content src="xhtml/ch024.html"/>
+</navPoint>
+<navPoint id="i38" playOrder="37">
+<navLabel>
+<text>Chapter 25</text>
+</navLabel>
+<content src="xhtml/ch025.html"/>
+</navPoint>
+<navPoint id="i39" playOrder="38">
+<navLabel>
+<text>Chapter 26</text>
+</navLabel>
+<content src="xhtml/ch026.html"/>
+</navPoint>
+<navPoint id="i40" playOrder="39">
+<navLabel>
+<text>Chapter 27</text>
+</navLabel>
+<content src="xhtml/ch027.html"/>
+</navPoint>
+<navPoint id="i41" playOrder="40">
+<navLabel>
+<text>Chapter 28</text>
+</navLabel>
+<content src="xhtml/ch028.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i42" playOrder="41">
+<navLabel>
+<text>Part 6: The Green Card Man</text>
+</navLabel>
+<content src="xhtml/part6.html"/>
+<navPoint id="i43" playOrder="42">
+<navLabel>
+<text>Chapter 29</text>
+</navLabel>
+<content src="xhtml/ch029.html"/>
+</navPoint>
+<navPoint id="i44" playOrder="43">
+<navLabel>
+<text>Chapter 30</text>
+</navLabel>
+<content src="xhtml/ch030.html"/>
+</navPoint>
+<navPoint id="i45" playOrder="44">
+<navLabel>
+<text>Chapter 31</text>
+</navLabel>
+<content src="xhtml/ch031.html"/>
+</navPoint>
+</navPoint>
+<navPoint id="i46" playOrder="45">
+<navLabel>
+<text>Final Notes</text>
+</navLabel>
+<content src="xhtml/final.html"/>
+</navPoint>
+<navPoint id="i47" playOrder="46">
+<navLabel>
+<text>Citizen of the Century (2012)</text>
+</navLabel>
+<content src="xhtml/citi.html"/>
+</navPoint>
+<navPoint id="i48" playOrder="47">
+<navLabel>
+<text>Afterword</text>
+</navLabel>
+<content src="xhtml/after.html"/>
+</navPoint>
+</navMap>
+</ncx>

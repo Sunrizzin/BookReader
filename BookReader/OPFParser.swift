@@ -15,6 +15,8 @@ class OPFParser: NSObject, XMLParserDelegate {
     private(set) var manifest: [String: String] = [:]
     private(set) var spine: [String] = []
     
+    private(set) var subjects: [String] = []
+    
     var coverItemID: String?
     
     func parse(url: URL) async throws {
@@ -77,6 +79,9 @@ class OPFParser: NSObject, XMLParserDelegate {
             metadata["identifier"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
         } else if currentElement == "dc:publisher" {
             metadata["publisher"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        } else if currentElement == "dc:subject" {
+            let subject = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            subjects.append(subject)
         }
         
         // Сбрасываем текущий элемент после завершения обработки

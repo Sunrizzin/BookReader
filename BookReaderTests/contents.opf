@@ -1,0 +1,190 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="2.0" unique-identifier="p9781451627305">
+  <opf:metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <dc:creator opf:role="aut" opf:file-as="King, Stephen">Stephen King</dc:creator>
+<dc:title>11/22/63: A Novel</dc:title>
+    <dc:identifier id="p9781451627305">9781451627305</dc:identifier>
+    <dc:publisher>Scribner</dc:publisher>
+    <opf:meta name="cover" content="my--cover-image"/>
+    <meta xmlns="" name="BNContentKind" content="book"/>
+  <meta name="calibre:title_sort" content="11/22/63: A Novel"/>
+<meta name="calibre:rating" content="8"/>
+<dc:identifier opf:scheme="ISBN">9781451627282</dc:identifier>
+<dc:subject>Fiction</dc:subject>
+<dc:subject>Horror</dc:subject>
+<dc:subject>Alternative History</dc:subject>
+<dc:description>ON NOVEMBER 22, 1963, THREE SHOTSRANG OUT IN DALLAS, PRESIDENTKENNEDY DIED, AND THE WORLD CHANGED.WHAT IF YOU COULD CHANGE IT BACK? In this brilliantly conceived tour de force, Stephen Kingwho has absorbed the social, political, and popular culture of his generation more imaginatively and thoroughly than any other writertakes readers on an incredible journey into the past and the possibility of altering it. It begins with Jake Epping, a thirty-five-year-old English teacher in Lisbon Falls, Maine, who makes extra money teaching GED classes. He asks his students to write about an event that changed their lives, and one essay blows him awaya gruesome, harrowing story about the night more than fifty years ago when Harry Dunning's father came home and killed his mother, his sister, and his brother with a sledgehammer. Reading the essay is a watershed moment for Jake, his lifelike Harry's, like America's in 1963turning on a dime. Not much later his friend Al, who owns the local diner, divulges a secret: his storeroom is a portal to the past, a particular day in 1958. And Al enlists Jake to take over the mission that has become his obsessionto prevent the Kennedy assassination. So begins Jake's new life as George Amberson, in a different world of Ike and JFK and Elvis, of big American cars and sock hops and cigarette smoke everywhere. From the dank little city of Derry, Maine (where there's Dunning business to conduct), to the warmhearted small town of Jodie, Texas, where Jake falls dangerously in love, every turn is leading eventually, of course, to a troubled loner named Lee Harvey Oswald and to Dallas, where the past becomes heart-stoppingly suspenseful, and where history might not be history anymore. Time-travel has never been so believable. Or so terrifying.</dc:description>
+<dc:date>2011-11-08T00:00:00+00:00</dc:date>
+<meta name="calibre:user_categories" content="{}"/>
+<meta name="calibre:author_link_map" content="{&quot;Stephen King&quot;: &quot;&quot;}"/>
+<dc:language>en</dc:language>
+</opf:metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="stylesheet" href="styles/9781451627305.css" media-type="text/css"/>
+    <item id="pt" href="styles/page-template.xpgt" media-type="application/vnd.adobe-page-template+xml"/>
+    <item id="font1" href="fonts/Garamond3LTStd.otf" media-type="application/x-font-otf"/>
+    <item id="font2" href="fonts/Garamond3LTStd-Bold.otf" media-type="application/x-font-otf"/>
+    <item id="font3" href="fonts/Garamond3LTStd-BoldItalic.otf" media-type="application/x-font-otf"/>
+    <item id="font4" href="fonts/Garamond3LTStd-Italic.otf" media-type="application/x-font-otf"/>
+    <item id="font5" href="fonts/AlternateGothicNo2BTStd-Regular.otf" media-type="application/x-font-otf"/>
+    <item id="font6" href="fonts/AmericanTypewriterStd-Med.otf" media-type="application/x-font-otf"/>
+    <item id="font7" href="fonts/CalibanStd.otf" media-type="application/x-font-otf"/>
+    <item id="font8" href="fonts/CheltenhamStd-BoldCondIt.otf" media-type="application/x-font-otf"/>
+    <item id="font14" href="fonts/CheltenhamStd-BoldCond.otf" media-type="application/x-font-otf"/>
+    <item id="font9" href="fonts/CooperBlackStd.otf" media-type="application/x-font-otf"/>
+    <item id="font10" href="fonts/CooperBlackStd-Italic.otf" media-type="application/x-font-otf"/>
+    <item id="font11" href="fonts/EngraversLTStd-BoldFace.otf" media-type="application/x-font-otf"/>
+    <item id="font12" href="fonts/FrutigerLTStd-Black.otf" media-type="application/x-font-otf"/>
+    <item id="font13" href="fonts/FrutigerLTStd-Bold.otf" media-type="application/x-font-otf"/>
+    <item id="font15" href="fonts/HelveticaLTStd-Blk.otf" media-type="application/x-font-otf"/>
+    <item id="font16" href="fonts/HelveticaLTStd-BlkObl.otf" media-type="application/x-font-otf"/>
+    <item id="font17" href="fonts/HelveticaLTStd-Obl.otf" media-type="application/x-font-otf"/>
+    <item id="font18" href="fonts/HelveticaLTStd-Roman.otf" media-type="application/x-font-otf"/>
+    <item id="font19" href="fonts/MemphisLTStd-Bold.otf" media-type="application/x-font-otf"/>
+    <item id="font20" href="fonts/NewsGothicBTStd-Bold.otf" media-type="application/x-font-otf"/>
+    <item id="font21" href="fonts/NewsGothicBTStd-BoldCondensedItalic.otf" media-type="application/x-font-otf"/>
+    <item id="font22" href="fonts/NewsGothicBTStd-Italic.otf" media-type="application/x-font-otf"/>
+    <item id="font23" href="fonts/NewsGothicBTStd-Roman.otf" media-type="application/x-font-otf"/>
+    <item id="font24" href="fonts/StencilStd.otf" media-type="application/x-font-otf"/>
+    <item id="font25" href="fonts/TimesNewRomanMTStd.otf" media-type="application/x-font-otf"/>
+    <item id="font26" href="fonts/TimesNewRomanMTStd-Bold.otf" media-type="application/x-font-otf"/>
+    <item id="font27" href="fonts/TimesNewRomanMTStd-BoldIt.otf" media-type="application/x-font-otf"/>
+    <item id="font28" href="fonts/TimesNewRomanMTStd-Italic.otf" media-type="application/x-font-otf"/>
+    <item id="font29" href="fonts/TradeGothicLTStd.otf" media-type="application/x-font-otf"/>
+    <item id="font30" href="fonts/TradeGothicLTStd-BdCn20.otf" media-type="application/x-font-otf"/>
+    <item id="font31" href="fonts/TradeGothicLTStd-BdCn20Obl.otf" media-type="application/x-font-otf"/>
+    <item id="font32" href="fonts/HelveticaInseratLTStd-Roman.otf" media-type="application/x-font-otf"/>
+    <item id="font33" href="fonts/AldusLTStd-Italic.otf" media-type="application/x-font-otf"/>
+    <item id="font34" href="fonts/AldusLTStd-Roman.otf" media-type="application/x-font-otf"/>
+    <item id="cover" href="xhtml/cover.html" media-type="application/xhtml+xml"/>
+    <item id="ibackcover" href="xhtml/backcover.html" media-type="application/xhtml+xml"/>
+    <item id="idescription" href="xhtml/description.html" media-type="application/xhtml+xml"/>
+    <item id="fm01" href="xhtml/fm01.html" media-type="application/xhtml+xml"/>
+    <item id="adcard" href="xhtml/ad_card.html" media-type="application/xhtml+xml"/>
+    <item id="title" href="xhtml/title.html" media-type="application/xhtml+xml"/>
+    <item id="copy" href="xhtml/copy.html" media-type="application/xhtml+xml"/>
+    <item id="ebookregback" href="xhtml/ebookregback.html" media-type="application/xhtml+xml"/>
+    <item id="ebookregfront" href="xhtml/ebookregfront.html" media-type="application/xhtml+xml"/>
+    <item id="ded" href="xhtml/ded.html" media-type="application/xhtml+xml"/>
+    <item id="fm02" href="xhtml/fm02.html" media-type="application/xhtml+xml"/>
+    <item id="toc" href="xhtml/toc.html" media-type="application/xhtml+xml"/>
+    <item id="halftitle" href="xhtml/halftitle.html" media-type="application/xhtml+xml"/>
+    <item id="fm03" href="xhtml/fm03.html" media-type="application/xhtml+xml"/>
+    <item id="part1" href="xhtml/part1.html" media-type="application/xhtml+xml"/>
+    <item id="ch01" href="xhtml/ch01.html" media-type="application/xhtml+xml"/>
+    <item id="ch02" href="xhtml/ch02.html" media-type="application/xhtml+xml"/>
+    <item id="ch03" href="xhtml/ch03.html" media-type="application/xhtml+xml"/>
+    <item id="ch04" href="xhtml/ch04.html" media-type="application/xhtml+xml"/>
+    <item id="part2" href="xhtml/part2.html" media-type="application/xhtml+xml"/>
+    <item id="ch05" href="xhtml/ch05.html" media-type="application/xhtml+xml"/>
+    <item id="ch06" href="xhtml/ch06.html" media-type="application/xhtml+xml"/>
+    <item id="ch07" href="xhtml/ch07.html" media-type="application/xhtml+xml"/>
+    <item id="ch08" href="xhtml/ch08.html" media-type="application/xhtml+xml"/>
+    <item id="part3" href="xhtml/part3.html" media-type="application/xhtml+xml"/>
+    <item id="ch09" href="xhtml/ch09.html" media-type="application/xhtml+xml"/>
+    <item id="ch010" href="xhtml/ch010.html" media-type="application/xhtml+xml"/>
+    <item id="ch011" href="xhtml/ch011.html" media-type="application/xhtml+xml"/>
+    <item id="ch012" href="xhtml/ch012.html" media-type="application/xhtml+xml"/>
+    <item id="ch013" href="xhtml/ch013.html" media-type="application/xhtml+xml"/>
+    <item id="part4" href="xhtml/part4.html" media-type="application/xhtml+xml"/>
+    <item id="ch014" href="xhtml/ch014.html" media-type="application/xhtml+xml"/>
+    <item id="ch015" href="xhtml/ch015.html" media-type="application/xhtml+xml"/>
+    <item id="ch016" href="xhtml/ch016.html" media-type="application/xhtml+xml"/>
+    <item id="ch017" href="xhtml/ch017.html" media-type="application/xhtml+xml"/>
+    <item id="ch018" href="xhtml/ch018.html" media-type="application/xhtml+xml"/>
+    <item id="ch019" href="xhtml/ch019.html" media-type="application/xhtml+xml"/>
+    <item id="ch020" href="xhtml/ch020.html" media-type="application/xhtml+xml"/>
+    <item id="ch021" href="xhtml/ch021.html" media-type="application/xhtml+xml"/>
+    <item id="ch022" href="xhtml/ch022.html" media-type="application/xhtml+xml"/>
+    <item id="part5" href="xhtml/part5.html" media-type="application/xhtml+xml"/>
+    <item id="ch023" href="xhtml/ch023.html" media-type="application/xhtml+xml"/>
+    <item id="ch024" href="xhtml/ch024.html" media-type="application/xhtml+xml"/>
+    <item id="ch025" href="xhtml/ch025.html" media-type="application/xhtml+xml"/>
+    <item id="ch026" href="xhtml/ch026.html" media-type="application/xhtml+xml"/>
+    <item id="ch027" href="xhtml/ch027.html" media-type="application/xhtml+xml"/>
+    <item id="ch028" href="xhtml/ch028.html" media-type="application/xhtml+xml"/>
+    <item id="part6" href="xhtml/part6.html" media-type="application/xhtml+xml"/>
+    <item id="ch029" href="xhtml/ch029.html" media-type="application/xhtml+xml"/>
+    <item id="ch030" href="xhtml/ch030.html" media-type="application/xhtml+xml"/>
+    <item id="ch031" href="xhtml/ch031.html" media-type="application/xhtml+xml"/>
+    <item id="final" href="xhtml/final.html" media-type="application/xhtml+xml"/>
+    <item id="citi" href="xhtml/citi.html" media-type="application/xhtml+xml"/>
+    <item id="after" href="xhtml/after.html" media-type="application/xhtml+xml"/>
+    <item id="my--cover-image" href="images/9781451627305.jpg" media-type="image/jpeg"/>
+    <item id="image1" href="images/f0223-01.jpg" media-type="image/jpeg"/>
+    <item id="image2" href="images/f0351-01.jpg" media-type="image/jpeg"/>
+    <item id="image3" href="images/f0575-01.jpg" media-type="image/jpeg"/>
+    <item id="image4" href="images/f07-01.jpg" media-type="image/jpeg"/>
+    <item id="image5" href="images/f0749-01.jpg" media-type="image/jpeg"/>
+    <item id="image6" href="images/f097-01.jpg" media-type="image/jpeg"/>
+    <item id="back" href="images/backcover.jpg" media-type="image/jpeg"/>
+    <item id="des" href="images/description.jpg" media-type="image/jpeg"/>
+    <item id="img1" href="images/title.jpg" media-type="image/jpeg"/>
+    <item id="img2" href="images/logo.jpg" media-type="image/jpeg"/>
+    <item id="img3" href="images/ht.jpg" media-type="image/jpeg"/>
+    <item id="img4" href="images/promo.jpg" media-type="image/jpeg"/>
+    <item id="img5" href="images/ad_card.jpg" media-type="image/jpeg"/>
+  </manifest>
+  <spine xmlns="http://www.idpf.org/2007/opf" toc="ncx">
+    <itemref idref="cover"/>
+    <itemref idref="idescription"/>
+    <itemref idref="ibackcover"/>
+    <itemref idref="ebookregfront"/>
+    <itemref idref="fm01"/>
+    <itemref idref="adcard"/>
+    <itemref idref="title"/>
+    <itemref idref="copy"/>
+    <itemref idref="ded"/>
+    <itemref idref="fm02"/>
+    <itemref idref="toc"/>
+    <itemref idref="halftitle"/>
+    <itemref idref="fm03"/>
+    <itemref idref="part1"/>
+    <itemref idref="ch01"/>
+    <itemref idref="ch02"/>
+    <itemref idref="ch03"/>
+    <itemref idref="ch04"/>
+    <itemref idref="part2"/>
+    <itemref idref="ch05"/>
+    <itemref idref="ch06"/>
+    <itemref idref="ch07"/>
+    <itemref idref="ch08"/>
+    <itemref idref="part3"/>
+    <itemref idref="ch09"/>
+    <itemref idref="ch010"/>
+    <itemref idref="ch011"/>
+    <itemref idref="ch012"/>
+    <itemref idref="ch013"/>
+    <itemref idref="part4"/>
+    <itemref idref="ch014"/>
+    <itemref idref="ch015"/>
+    <itemref idref="ch016"/>
+    <itemref idref="ch017"/>
+    <itemref idref="ch018"/>
+    <itemref idref="ch019"/>
+    <itemref idref="ch020"/>
+    <itemref idref="ch021"/>
+    <itemref idref="ch022"/>
+    <itemref idref="part5"/>
+    <itemref idref="ch023"/>
+    <itemref idref="ch024"/>
+    <itemref idref="ch025"/>
+    <itemref idref="ch026"/>
+    <itemref idref="ch027"/>
+    <itemref idref="ch028"/>
+    <itemref idref="part6"/>
+    <itemref idref="ch029"/>
+    <itemref idref="ch030"/>
+    <itemref idref="ch031"/>
+    <itemref idref="final"/>
+    <itemref idref="citi"/>
+    <itemref idref="after"/>
+    <itemref idref="ebookregback"/>
+  </spine>
+  <guide>
+    <reference type="toc" title="Table of Contents" href="xhtml/toc.html"/>
+    <reference type="cover" title="Cover" href="xhtml/cover.html"/>
+    <reference type="text" title="Story" href="xhtml/part1.html"/>
+  </guide>
+</package>
