@@ -12,7 +12,7 @@ import WebKit
 
 class NCXParser: NSObject, XMLParserDelegate {
     struct NavPoint {
-        var playOrder: String
+        var playOrder: Int
         var label: String
         var contentSrc: String
         var children: [NavPoint] = []
@@ -38,12 +38,12 @@ class NCXParser: NSObject, XMLParserDelegate {
         }
     }
     
-    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+    // Начало элемента
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
         if elementName == "navPoint" {
-            let playOrder = attributeDict["playOrder"] ?? ""
+            let playOrder = Int(attributeDict["playOrder"] ?? "0") ?? 0
             let navPoint = NavPoint(playOrder: playOrder, label: "", contentSrc: "")
             navPointStack.append(navPoint)
         } else if elementName == "content" {
@@ -52,14 +52,17 @@ class NCXParser: NSObject, XMLParserDelegate {
                 navPointStack[navPointStack.count - 1] = currentNavPoint
             }
         }
+        
+        tempValue = ""
     }
     
+    // Символы внутри элемента
     func parser(_ parser: XMLParser, foundCharacters string: String) {
         tempValue += string
     }
     
-    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?,
-                qualifiedName qName: String?) {
+    // Конец элемента
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "text" {
             if var currentNavPoint = navPointStack.last {
                 currentNavPoint.label = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -74,11 +77,10 @@ class NCXParser: NSObject, XMLParserDelegate {
                 toc.append(completedNavPoint)
             }
         }
+        
         tempValue = ""
     }
-}
-
-extension NCXParser {
+    
     func flattenTOC() -> [NavPoint] {
         var flatTOC: [NavPoint] = []
         
@@ -92,6 +94,9 @@ extension NCXParser {
         }
         
         flatten(navPoints: toc)
+        
+        flatTOC.sort { $0.playOrder < $1.playOrder }
+        
         return flatTOC
     }
 }

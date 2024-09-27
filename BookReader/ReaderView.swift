@@ -37,7 +37,7 @@ struct ReaderView: View {
                     }
                 }
         }
-        .alert(item: $errorMessage) { error in  // Алерт для ошибок
+        .alert(item: $errorMessage) { error in
             Alert(
                 title: Text("Error"),
                 message: Text(error.message),

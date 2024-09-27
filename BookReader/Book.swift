@@ -7,17 +7,46 @@
 
 import Foundation
 import UIKit
+import Swift
+import SwiftData
 
-struct Book {
+@Model
+class Book {
+    @Attribute(.unique) var id: UUID
     var title: String
     var author: String
     var chapters: [Chapter]
     var baseURL: URL?
-    var coverImage: UIImage?
+    var coverImageData: Data?
+    
+    init(title: String, author: String, chapters: [Chapter], baseURL: URL?, coverImage: UIImage?) {
+        self.id = UUID()
+        self.title = title
+        self.author = author
+        self.chapters = chapters
+        self.baseURL = baseURL
+        self.coverImageData = coverImage?.pngData()
+    }
+    
+    var coverImage: UIImage? {
+        if let data = coverImageData {
+            return UIImage(data: data)
+        }
+        return nil
+    }
 }
 
-struct Chapter {
+@Model
+class Chapter {
+    @Attribute(.unique) var id: UUID
     var title: String
     var content: String
     var baseURL: URL
+    
+    init(title: String, content: String, baseURL: URL) {
+        self.id = UUID()
+        self.title = title
+        self.content = content
+        self.baseURL = baseURL
+    }
 }

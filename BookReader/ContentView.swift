@@ -6,15 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \Book.title, order: .forward) private var books: [Book]
+    
     @State private var isFileImporterPresented = false
-    @State private var books: [Book] = []
     @State private var selectedBook: Book? = nil
     @State private var isShowingReader = false
     @State private var isLoading = false
-    @State private var errorMessage: ErrorMessage?  // Используем новую структуру
+    @State private var errorMessage: ErrorMessage?
     
     var body: some View {
         NavigationStack {
@@ -98,7 +101,7 @@ struct ContentView: View {
                     Text("No book selected")
                 }
             }
-            .alert(item: $errorMessage) { error in  // Теперь используем ErrorMessage
+            .alert(item: $errorMessage) { error in
                 Alert(
                     title: Text("Error"),
                     message: Text(error.message),
@@ -108,7 +111,6 @@ struct ContentView: View {
         }
     }
     
-    // Асинхронная обработка импорта файла
     private func handleFileImport(result: Result<URL, Error>) async {
         do {
             let selectedURL = try result.get()
@@ -119,7 +121,7 @@ struct ContentView: View {
                 defer { selectedURL.stopAccessingSecurityScopedResource() }
                 
                 if let parsedBook = try await BookParser().parseEPUB(at: selectedURL) {
-                    books.append(parsedBook)
+                    modelContext.insert(parsedBook)
                 } else {
                     errorMessage = ErrorMessage(message: "Failed to parse the EPUB file.")
                 }
@@ -132,7 +134,10 @@ struct ContentView: View {
     }
     
     private func deleteBooks(at offsets: IndexSet) {
-        books.remove(atOffsets: offsets)
+        for index in offsets {
+            let book = books[index]
+            modelContext.delete(book)
+        }
     }
 }
 
