@@ -15,6 +15,7 @@ struct Book {
     var author: String
     var chapters: [Chapter]
     var baseURL: URL?
+    var coverImage: UIImage?
 }
 
 struct Chapter {
@@ -39,10 +40,11 @@ class BookParser {
             try fileManager.createDirectory(at: tempDir, withIntermediateDirectories: true, attributes: nil)
             
             try fileManager.unzipItem(at: epubURL, to: tempDir)
+            
             let containerURL = tempDir.appendingPathComponent("META-INF/container.xml")
             let containerParser = ContainerXMLParser()
             guard let opfRelativePath = containerParser.parse(url: containerURL) else {
-                print("Не удалось найти путь к .opf файлу")
+                print("Path not find on .opf file")
                 return nil
             }
             let opfURL = tempDir.appendingPathComponent(opfRelativePath)
@@ -50,32 +52,21 @@ class BookParser {
             let opfParser = OPFParser()
             opfParser.parse(url: opfURL)
             
-            // Определение версии EPUB и парсинг оглавления
-            var tocMap: [String: String] = [:]
-            if let ncxPath = opfParser.manifest["ncx"] {
-                let ncxURL = opfURL.deletingLastPathComponent().appendingPathComponent(ncxPath)
-                let ncxParser = NCXParser()
-                ncxParser.parse(url: ncxURL)
-                let flatTOC = ncxParser.flattenTOC()
-                
-                // Создаем сопоставление между contentSrc и label
-                for navPoint in flatTOC {
-                    let normalizedSrc = normalizePath(navPoint.contentSrc)
-                    tocMap[normalizedSrc] = navPoint.label
+            var coverImage: UIImage? = nil
+            if let coverItemID = opfParser.coverItemID, let coverPath = opfParser.manifest[coverItemID] {
+                let coverURL = opfURL.deletingLastPathComponent().appendingPathComponent(coverPath)
+                if let imageData = try? Data(contentsOf: coverURL), let image = UIImage(data: imageData) {
+                    coverImage = image
                 }
             }
             
-            // Парсинг книги
             var chapters: [Chapter] = []
             for id in opfParser.spine {
                 if let href = opfParser.manifest[id] {
                     let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
                     let content = try String(contentsOf: chapterURL, encoding: .utf8)
                     let baseURL = chapterURL.deletingLastPathComponent()
-                    
-                    let normalizedHref = normalizePath(href)
-                    let title = tocMap[normalizedHref] ?? "Глава"
-                    
+                    let title = opfParser.metadata["title"] ?? "Chapter"
                     let chapter = Chapter(title: title, content: content, baseURL: baseURL)
                     chapters.append(chapter)
                 }
@@ -84,25 +75,26 @@ class BookParser {
             let baseURL = opfURL.deletingLastPathComponent()
             
             let book = Book(
-                title: opfParser.metadata["title"] ?? "Без названия",
-                author: opfParser.metadata["creator"] ?? "Неизвестный автор",
+                title: opfParser.metadata["title"] ?? "No title",
+                author: opfParser.metadata["creator"] ?? "Unknown author",
                 chapters: chapters,
-                baseURL: baseURL
+                baseURL: baseURL,
+                coverImage: coverImage
             )
             
             return book
         } catch {
-            print("Ошибка при парсинге EPUB: \(error)")
+            print("Parsing error EPUB: \(error)")
             return nil
         }
     }
     
     func extractContent(from htmlURL: URL) -> String {
         do {
-            let htmlString = try String(contentsOf: htmlURL)
+            let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
             return htmlString
         } catch {
-            print("Ошибка при чтении файла \(htmlURL): \(error)")
+            print("Read error: \(htmlURL): \(error)")
             return ""
         }
     }
@@ -115,9 +107,7 @@ class BookParser {
         }
         return nil
     }
-    
 }
-
 
 class ContainerXMLParser: NSObject, XMLParserDelegate {
     private var currentElement = ""
@@ -125,14 +115,14 @@ class ContainerXMLParser: NSObject, XMLParserDelegate {
     
     func parse(url: URL) -> String? {
         guard let parser = XMLParser(contentsOf: url) else {
-            print("Не удалось инициализировать XMLParser с URL: \(url)")
+            print("Parsing init error XMLParser URL: \(url)")
             return nil
         }
         parser.delegate = self
         if parser.parse() {
             return opfPath
         } else {
-            print("Ошибка при парсинге container.xml: \(parser.parserError?.localizedDescription ?? "Неизвестная ошибка")")
+            print("Parsing error container.xml: \(parser.parserError?.localizedDescription ?? "Unknown error")")
             return nil
         }
     }
@@ -145,7 +135,6 @@ class ContainerXMLParser: NSObject, XMLParserDelegate {
         }
     }
 }
-
 class OPFParser: NSObject, XMLParserDelegate {
     private var currentElement = ""
     private var tempValue = ""
@@ -156,7 +145,7 @@ class OPFParser: NSObject, XMLParserDelegate {
     
     private(set) var spine: [String] = []
     
-    private(set) var isEPUB3: Bool = false
+    var coverItemID: String?
     
     func parse(url: URL) {
         guard let parser = XMLParser(contentsOf: url) else {
@@ -165,19 +154,19 @@ class OPFParser: NSObject, XMLParserDelegate {
         }
         parser.delegate = self
         if !parser.parse() {
-            print("Ошибка при парсинге .opf файла: \(parser.parserError?.localizedDescription ?? "Неизвестная ошибка")")
+            print("Parsing error .opf file: \(parser.parserError?.localizedDescription ?? "Unknown error")")
         }
+    }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
+        tempValue += string
     }
     
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?,
                 qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
-        if elementName == "package" {
-            if let version = attributeDict["version"], version.hasPrefix("3") {
-                isEPUB3 = true
-            }
-        } else if elementName == "item" {
+        if elementName == "item" {
             if let id = attributeDict["id"], let href = attributeDict["href"] {
                 manifest[id] = href
             }
@@ -185,11 +174,9 @@ class OPFParser: NSObject, XMLParserDelegate {
             if let idref = attributeDict["idref"] {
                 spine.append(idref)
             }
+        } else if elementName == "meta", let name = attributeDict["name"], name == "cover" {
+            coverItemID = attributeDict["content"]
         }
-    }
-    
-    func parser(_ parser: XMLParser, foundCharacters string: String) {
-        tempValue += string
     }
     
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?,
@@ -198,15 +185,10 @@ class OPFParser: NSObject, XMLParserDelegate {
             metadata["title"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
         } else if currentElement == "dc:creator" {
             metadata["creator"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:language" {
-            metadata["language"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:publisher" {
-            metadata["publisher"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
         }
         tempValue = ""
     }
 }
-
 class NCXParser: NSObject, XMLParserDelegate {
     struct NavPoint {
         var playOrder: String
@@ -222,12 +204,12 @@ class NCXParser: NSObject, XMLParserDelegate {
     
     func parse(url: URL) {
         guard let parser = XMLParser(contentsOf: url) else {
-            print("Не удалось инициализировать XMLParser с URL: \(url)")
+            print("Paser not initialized. XMLParser URL: \(url)")
             return
         }
         parser.delegate = self
         if !parser.parse() {
-            print("Ошибка при парсинге toc.ncx: \(parser.parserError?.localizedDescription ?? "Неизвестная ошибка")")
+            print("Error parsing toc.ncx: \(parser.parserError?.localizedDescription ?? "Unknown error")")
         }
     }
     
