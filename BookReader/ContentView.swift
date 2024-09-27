@@ -7,74 +7,132 @@
 
 import SwiftUI
 
-import SwiftUI
-import UniformTypeIdentifiers
-
 struct ContentView: View {
     
-    let bookParser = BookParser()
-    
     @State private var isFileImporterPresented = false
-    @State private var selectedFileURL: URL?
-    @State private var book: Book?
+    @State private var books: [Book] = []
+    @State private var selectedBook: Book? = nil
+    @State private var isShowingReader = false
+    @State private var isLoading = false
+    @State private var errorMessage: ErrorMessage?  // Используем новую структуру
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
-                Button(action: {
-                    isFileImporterPresented = true
-                }) {
-                    Text("Выбрать EPUB файл")
-                        .font(.headline)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                }
-                
-                if let book = book {
-                    Text("Книга: \(book.title)")
-                        .font(.title3)
-                        .padding(20)
-                    
-                    NavigationLink(destination: ReaderView(book: book)) {
-                        Text("Читать")
+                if isLoading {
+                    ProgressView("Loading...")
+                        .progressViewStyle(CircularProgressViewStyle())
+                } else {
+                    if books.isEmpty {
+                        Text("No books available. Add a book to start reading.")
                             .font(.headline)
                             .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(10)
+                    } else {
+                        List {
+                            ForEach(books, id: \.title) { book in
+                                HStack {
+                                    if let coverImage = book.coverImage {
+                                        Image(uiImage: coverImage)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 50, height: 75)
+                                            .cornerRadius(8)
+                                            .padding(.trailing, 10)
+                                    } else {
+                                        Rectangle()
+                                            .fill(Color.gray)
+                                            .frame(width: 50, height: 75)
+                                            .cornerRadius(8)
+                                            .padding(.trailing, 10)
+                                    }
+                                    
+                                    Text(book.title)
+                                        .font(.headline)
+                                    
+                                    Spacer()
+                                    
+                                    Button(action: {
+                                        selectedBook = book
+                                        isShowingReader = true
+                                    }) {
+                                        Text("Read")
+                                            .foregroundColor(.white)
+                                            .padding(.horizontal, 12)
+                                            .padding(.vertical, 8)
+                                            .background(Color.green)
+                                            .cornerRadius(8)
+                                    }
+                                    .buttonStyle(BorderlessButtonStyle())
+                                }
+                                .padding(.vertical, 4)
+                            }
+                            .onDelete(perform: deleteBooks)
+                        }
+                        .listStyle(.insetGrouped)
                     }
-                    .padding(.top, 10)
-                } else if let fileURL = selectedFileURL {
-                    Text("Выбран файл: \(fileURL.lastPathComponent)")
-                        .padding()
                 }
             }
-            .navigationTitle("EPUB Reader")
+            .navigationTitle("Book Reader")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        isFileImporterPresented = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add book")
+                }
+            }
             .fileImporter(
                 isPresented: $isFileImporterPresented,
                 allowedContentTypes: [.epub]
             ) { result in
-                do {
-                    let selectedURL = try result.get()
-                    selectedFileURL = selectedURL
-                    
-                    if selectedURL.startAccessingSecurityScopedResource() {
-                        defer { selectedURL.stopAccessingSecurityScopedResource() }
-                        if let parsedBook = bookParser.parseEPUB(at: selectedURL) {
-                            book = parsedBook
-                        } else {
-                            print("Не удалось распарсить EPUB файл")
-                        }
-                    } else {
-                        print("Не удалось получить доступ к файлу")
-                    }
-                } catch {
-                    print("Ошибка при выборе файла: \(error.localizedDescription)")
+                Task {
+                    await handleFileImport(result: result)
                 }
             }
+            .navigationDestination(isPresented: $isShowingReader) {
+                if let selectedBook = selectedBook {
+                    ReaderView(book: selectedBook)
+                } else {
+                    Text("No book selected")
+                }
+            }
+            .alert(item: $errorMessage) { error in  // Теперь используем ErrorMessage
+                Alert(
+                    title: Text("Error"),
+                    message: Text(error.message),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
+    }
+    
+    // Асинхронная обработка импорта файла
+    private func handleFileImport(result: Result<URL, Error>) async {
+        do {
+            let selectedURL = try result.get()
+            isLoading = true
+            defer { isLoading = false }
+            
+            if selectedURL.startAccessingSecurityScopedResource() {
+                defer { selectedURL.stopAccessingSecurityScopedResource() }
+                
+                if let parsedBook = try await BookParser().parseEPUB(at: selectedURL) {
+                    books.append(parsedBook)
+                } else {
+                    errorMessage = ErrorMessage(message: "Failed to parse the EPUB file.")
+                }
+            } else {
+                errorMessage = ErrorMessage(message: "Failed to access the file.")
+            }
+        } catch {
+            errorMessage = ErrorMessage(message: "File import error: \(error.localizedDescription)")
+        }
+    }
+    
+    private func deleteBooks(at offsets: IndexSet) {
+        books.remove(atOffsets: offsets)
     }
 }
 
