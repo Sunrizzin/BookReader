@@ -32,7 +32,7 @@ struct ContentView: View {
                             .padding()
                     } else {
                         List {
-                            ForEach(books, id: \.title) { book in
+                            ForEach(books) { book in
                                 HStack {
                                     if let coverImage = book.coverImage {
                                         Image(uiImage: coverImage)
@@ -42,15 +42,24 @@ struct ContentView: View {
                                             .cornerRadius(8)
                                             .padding(.trailing, 10)
                                     } else {
-                                        Rectangle()
-                                            .fill(Color.gray)
-                                            .frame(width: 50, height: 75)
-                                            .cornerRadius(8)
-                                            .padding(.trailing, 10)
+                                        ZStack {
+                                            Rectangle()
+                                                .fill(Color.gray)
+                                                .frame(width: 50, height: 75)
+                                                .cornerRadius(8)
+                                                .padding(.trailing, 10)
+                                            Image(systemName: "book")
+                                                .foregroundStyle(.white)
+                                                .padding(.trailing, 10)
+                                        }
                                     }
                                     
-                                    Text(book.title)
-                                        .font(.headline)
+                                    VStack(alignment: .leading) {
+                                        Text(book.author)
+                                            .font(.title3)
+                                        Text(book.title)
+                                            .font(.headline)
+                                    }
                                     
                                     Spacer()
                                     
