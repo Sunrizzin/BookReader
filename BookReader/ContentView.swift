@@ -74,6 +74,11 @@ struct ContentView: View {
                         .listStyle(.insetGrouped)
                     }
                 }
+                
+                if let errorMessage {
+                    Text(errorMessage.message)
+                        .padding()
+                }
             }
             .navigationTitle("Book Reader")
             .toolbar {
@@ -120,15 +125,29 @@ struct ContentView: View {
             if selectedURL.startAccessingSecurityScopedResource() {
                 defer { selectedURL.stopAccessingSecurityScopedResource() }
                 
-                if let parsedBook = try await BookParser().parseEPUB(at: selectedURL) {
-                    modelContext.insert(parsedBook)
-                } else {
-                    errorMessage = ErrorMessage(message: "Failed to parse the EPUB file.")
+                do {
+                    // Пытаемся распарсить EPUB файл
+                    if let parsedBook = try await BookParser().parseEPUB(at: selectedURL) {
+                        modelContext.insert(parsedBook)
+                    } else {
+                        errorMessage = ErrorMessage(message: "Failed to parse the EPUB file.")
+                    }
+                } catch let nsError as NSError {
+                    // Обработка конкретных ошибок, например, отсутствие container.xml
+                    if nsError.domain == "EPUBParserError" && nsError.code == 404 {
+                        errorMessage = ErrorMessage(message: "OPF file not found. The EPUB file might be corrupted or incorrectly formatted.")
+                    } else if nsError.domain == "EPUBParserError" && nsError.code == 500 {
+                        errorMessage = ErrorMessage(message: "Error parsing EPUB file: \(nsError.localizedDescription)")
+                    } else {
+                        // Общая обработка остальных ошибок
+                        errorMessage = ErrorMessage(message: "Unexpected error during parsing: \(nsError.localizedDescription)")
+                    }
                 }
             } else {
                 errorMessage = ErrorMessage(message: "Failed to access the file.")
             }
         } catch {
+            // Общая обработка ошибок, если не удалось получить URL файла
             errorMessage = ErrorMessage(message: "File import error: \(error.localizedDescription)")
         }
     }

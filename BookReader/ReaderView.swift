@@ -17,7 +17,7 @@ struct ReaderView: View {
         VStack {
             WebView(htmlContent: book.chapters[selectedChapterIndex].content, baseURL: book.chapters[selectedChapterIndex].baseURL)
                 .edgesIgnoringSafeArea(.bottom)
-                .padding(.horizontal, 4)
+                .padding(.horizontal)
                 .navigationTitle(book.chapters[selectedChapterIndex].title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -35,6 +35,21 @@ struct ReaderView: View {
                             Image(systemName: "list.bullet")
                         }
                     }
+                    
+                    // Добавляем нижний тулбар с кнопками "Предыдущая" и "Следующая"
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        Button(action: previousChapter) {
+                            Label("Previous", systemImage: "arrow.left")
+                        }
+                        .disabled(selectedChapterIndex == 0) // Отключаем кнопку на первой главе
+                        
+                        Spacer()
+                        
+                        Button(action: nextChapter) {
+                            Label("Next", systemImage: "arrow.right")
+                        }
+                        .disabled(selectedChapterIndex == book.chapters.count - 1) // Отключаем кнопку на последней главе
+                    }
                 }
         }
         .alert(item: $errorMessage) { error in
@@ -43,6 +58,19 @@ struct ReaderView: View {
                 message: Text(error.message),
                 dismissButton: .default(Text("OK"))
             )
+        }
+    }
+    
+    // Функции для переключения глав
+    private func previousChapter() {
+        if selectedChapterIndex > 0 {
+            selectedChapterIndex -= 1
+        }
+    }
+    
+    private func nextChapter() {
+        if selectedChapterIndex < book.chapters.count - 1 {
+            selectedChapterIndex += 1
         }
     }
 }

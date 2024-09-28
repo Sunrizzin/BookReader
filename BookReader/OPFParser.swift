@@ -16,20 +16,29 @@ class OPFParser: NSObject, XMLParserDelegate {
     private(set) var spine: [String] = []
     
     private(set) var subjects: [String] = []
-    
     var coverItemID: String?
     
+    // Асинхронный метод парсинга с использованием Task.detached
     func parse(url: URL) async throws {
         return try await withCheckedThrowingContinuation { continuation in
-            guard let parser = XMLParser(contentsOf: url) else {
-                continuation.resume(throwing: NSError(domain: "OPFParserError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Не удалось создать XMLParser"]))
-                return
-            }
-            parser.delegate = self
-            if parser.parse() {
-                continuation.resume()
-            } else {
-                continuation.resume(throwing: NSError(domain: "OPFParserError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка парсинга OPF"]))
+            Task.detached { [weak self] in
+                guard let self = self else { return }
+                
+                // Проверка возможности создания XMLParser
+                guard let parser = XMLParser(contentsOf: url) else {
+                    continuation.resume(throwing: NSError(domain: "OPFParserError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Не удалось создать XMLParser"]))
+                    return
+                }
+                
+                // Устанавливаем делегат
+                parser.delegate = self
+                
+                // Парсинг файла
+                if parser.parse() {
+                    continuation.resume()
+                } else {
+                    continuation.resume(throwing: NSError(domain: "OPFParserError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка парсинга OPF"]))
+                }
             }
         }
     }
@@ -38,21 +47,21 @@ class OPFParser: NSObject, XMLParserDelegate {
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
-        // Обработка элемента item
+        // Обработка элемента item для заполнения манифеста
         if elementName == "item" {
             if let id = attributeDict["id"], let href = attributeDict["href"] {
                 manifest[id] = href
             }
         }
         
-        // Обработка элемента itemref
+        // Обработка элемента itemref для заполнения spine
         if elementName == "itemref" {
             if let idref = attributeDict["idref"] {
                 spine.append(idref)
             }
         }
         
-        // Обработка элемента meta
+        // Обработка элемента meta для определения обложки
         if elementName == "meta", let name = attributeDict["name"], name == "cover" {
             coverItemID = attributeDict["content"]
         }
@@ -63,29 +72,44 @@ class OPFParser: NSObject, XMLParserDelegate {
     
     // Найдены символы между открывающим и закрывающим тегами
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        tempValue += string
+        // Удаляем лишние пробелы и символы новой строки
+        tempValue += string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     // Завершение элемента
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        // Обрабатываем метаданные в зависимости от текущего элемента
-        if currentElement == "dc:title" {
-            metadata["title"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:creator" {
-            metadata["creator"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:language" {
-            metadata["language"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:identifier" {
-            metadata["identifier"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:publisher" {
-            metadata["publisher"] = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
-        } else if currentElement == "dc:subject" {
-            let subject = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
+        // Обрабатываем метаданные
+        switch elementName {
+        case "dc:title":
+            metadata["title"] = tempValue
+        case "dc:creator":
+            metadata["creator"] = tempValue
+        case "dc:language":
+            metadata["language"] = tempValue
+        case "dc:identifier":
+            metadata["identifier"] = tempValue
+        case "dc:publisher":
+            metadata["publisher"] = tempValue
+        case "dc:subject":
+            let subject = tempValue
             subjects.append(subject)
+        case "dc:date":
+            metadata["date"] = tempValue
+        case "dc:rights":
+            metadata["rights"] = tempValue
+        case "dc:description":
+            metadata["description"] = tempValue
+        default:
+            break
         }
         
-        // Сбрасываем текущий элемент после завершения обработки
+        // Сбрасываем текущий элемент и временное значение
         currentElement = ""
         tempValue = ""
+    }
+    
+    // Обработка ошибок парсинга
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+        print("Ошибка парсинга: \(parseError.localizedDescription)")
     }
 }

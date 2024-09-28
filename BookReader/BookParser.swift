@@ -1,5 +1,6 @@
 import Foundation
 import UIKit
+import ZIPFoundation
 
 class BookParser {
     
@@ -29,7 +30,7 @@ class BookParser {
             if let ncxPath = opfParser.manifest["ncx"] {
                 let ncxURL = opfURL.deletingLastPathComponent().appendingPathComponent(ncxPath)
                 let ncxParser = NCXParser()
-                await ncxParser.parse(url: ncxURL)
+                try await ncxParser.parse(url: ncxURL)
                 let orderedChapters = ncxParser.flattenTOC()  // Главы из NCX файла
                 
                 // Используем spine для получения физического содержимого глав

@@ -6,9 +6,6 @@
 //
 
 import Foundation
-import ZIPFoundation
-import SwiftUI
-import WebKit
 
 class NCXParser: NSObject, XMLParserDelegate {
     struct NavPoint {
@@ -23,17 +20,24 @@ class NCXParser: NSObject, XMLParserDelegate {
     private var navPointStack: [NavPoint] = []
     private(set) var toc: [NavPoint] = []
     
-    func parse(url: URL) async {
-        await withCheckedContinuation { continuation in
-            guard let parser = XMLParser(contentsOf: url) else {
-                continuation.resume()
-                return
-            }
-            parser.delegate = self
-            if !parser.parse() {
-                continuation.resume()
-            } else {
-                continuation.resume()
+    // Асинхронный метод парсинга
+    func parse(url: URL) async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            Task.detached { [weak self] in
+                guard let self = self else { return }
+                
+                guard let parser = XMLParser(contentsOf: url) else {
+                    continuation.resume(throwing: NSError(domain: "NCXParserError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Не удалось создать XMLParser"]))
+                    return
+                }
+                
+                parser.delegate = self
+                
+                if !parser.parse() {
+                    continuation.resume(throwing: NSError(domain: "NCXParserError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Ошибка парсинга NCX"]))
+                } else {
+                    continuation.resume()
+                }
             }
         }
     }
@@ -53,23 +57,26 @@ class NCXParser: NSObject, XMLParserDelegate {
             }
         }
         
+        // Очищаем временное значение для нового элемента
         tempValue = ""
     }
     
-    // Символы внутри элемента
+    // Найдены символы внутри элемента
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        tempValue += string
+        // Добавляем символы с удалением лишних пробелов
+        tempValue += string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     // Конец элемента
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
         if elementName == "text" {
             if var currentNavPoint = navPointStack.last {
-                currentNavPoint.label = tempValue.trimmingCharacters(in: .whitespacesAndNewlines)
+                currentNavPoint.label = tempValue
                 navPointStack[navPointStack.count - 1] = currentNavPoint
             }
         } else if elementName == "navPoint" {
-            let completedNavPoint = navPointStack.popLast()!
+            guard let completedNavPoint = navPointStack.popLast() else { return }
+            
             if var parentNavPoint = navPointStack.last {
                 parentNavPoint.children.append(completedNavPoint)
                 navPointStack[navPointStack.count - 1] = parentNavPoint
@@ -78,12 +85,15 @@ class NCXParser: NSObject, XMLParserDelegate {
             }
         }
         
+        // Сбрасываем временное значение после завершения элемента
         tempValue = ""
     }
     
+    // Плоское представление TOC (оглавления)
     func flattenTOC() -> [NavPoint] {
         var flatTOC: [NavPoint] = []
         
+        // Рекурсивная функция для обхода иерархии
         func flatten(navPoints: [NavPoint]) {
             for navPoint in navPoints {
                 flatTOC.append(navPoint)
@@ -95,8 +105,14 @@ class NCXParser: NSObject, XMLParserDelegate {
         
         flatten(navPoints: toc)
         
+        // Сортируем по playOrder
         flatTOC.sort { $0.playOrder < $1.playOrder }
         
         return flatTOC
+    }
+    
+    // Обработка ошибки парсинга
+    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
+        print("Ошибка парсинга NCX: \(parseError.localizedDescription)")
     }
 }
