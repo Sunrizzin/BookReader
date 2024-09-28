@@ -1,10 +1,3 @@
-//
-//  OPFParser.swift
-//  BookReader
-//
-//  Created by Sunrizz on 27.09.2024.
-//
-
 import Foundation
 
 class OPFParser: NSObject, XMLParserDelegate {
@@ -17,6 +10,7 @@ class OPFParser: NSObject, XMLParserDelegate {
     
     private(set) var subjects: [String] = []
     var coverItemID: String?
+    var translator: String?
     
     // Асинхронный метод парсинга с использованием Task.detached
     func parse(url: URL) async throws {
@@ -61,9 +55,13 @@ class OPFParser: NSObject, XMLParserDelegate {
             }
         }
         
-        // Обработка элемента meta для определения обложки
-        if elementName == "meta", let name = attributeDict["name"], name == "cover" {
-            coverItemID = attributeDict["content"]
+        // Обработка элемента meta для определения обложки или переводчика
+        if elementName == "meta" {
+            if let name = attributeDict["name"], name == "cover" {
+                coverItemID = attributeDict["content"]
+            } else if let name = attributeDict["name"], name == "FB2.book-info.translator" {
+                translator = attributeDict["content"]
+            }
         }
         
         // Очищаем tempValue для нового элемента

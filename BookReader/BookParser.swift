@@ -33,15 +33,14 @@ class BookParser {
                 try await ncxParser.parse(url: ncxURL)
                 let orderedChapters = ncxParser.flattenTOC()  // Главы из NCX файла
                 
-                // Используем spine для получения физического содержимого глав
+                // Используем NCX для получения названий глав
                 for navPoint in orderedChapters {
-                    // Проверка на содержание фрагментов (#) в пути
                     if let href = opfParser.manifest.values.first(where: { normalizePath($0) == normalizePath(navPoint.contentSrc) }) {
                         let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
                         let content = try String(contentsOf: chapterURL, encoding: .utf8)
                         let baseURL = chapterURL.deletingLastPathComponent()
                         
-                        // Добавляем главу в список
+                        // Добавляем главу с правильным названием
                         let chapter = Chapter(title: navPoint.label, content: content, baseURL: baseURL)
                         chapters.append(chapter)
                     } else {
@@ -49,7 +48,21 @@ class BookParser {
                     }
                 }
             } else {
-                print("NCX файл не найден в манифесте OPF")
+                print("NCX файл не найден в манифесте OPF, попробую использовать spine")
+                
+                // Если NCX не найден, используем структуру spine для создания оглавления
+                for idref in opfParser.spine {
+                    if let href = opfParser.manifest[idref] {
+                        let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
+                        let content = try String(contentsOf: chapterURL, encoding: .utf8)
+                        let title = href.components(separatedBy: "/").last ?? "Без названия"
+                        let baseURL = chapterURL.deletingLastPathComponent()
+                        
+                        // Добавляем главу в список
+                        let chapter = Chapter(title: title, content: content, baseURL: baseURL)
+                        chapters.append(chapter)
+                    }
+                }
             }
             
             // Парсинг обложки (если есть)

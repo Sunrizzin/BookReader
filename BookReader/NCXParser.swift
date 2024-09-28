@@ -1,10 +1,3 @@
-//
-//  NCXParser.swift
-//  BookReader
-//
-//  Created by Sunrizz on 27.09.2024.
-//
-
 import Foundation
 
 class NCXParser: NSObject, XMLParserDelegate {
@@ -51,6 +44,7 @@ class NCXParser: NSObject, XMLParserDelegate {
             let navPoint = NavPoint(playOrder: playOrder, label: "", contentSrc: "")
             navPointStack.append(navPoint)
         } else if elementName == "content" {
+            // Сохраняем путь к главе
             if var currentNavPoint = navPointStack.last, let src = attributeDict["src"] {
                 currentNavPoint.contentSrc = src
                 navPointStack[navPointStack.count - 1] = currentNavPoint
