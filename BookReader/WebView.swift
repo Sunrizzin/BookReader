@@ -11,6 +11,7 @@ import WebKit
 struct WebView: UIViewRepresentable {
     var htmlContent: String
     var baseURL: URL?
+    var cssContent: String
     
     // Возможность передать конфигурацию
     var configuration: WKWebViewConfiguration = WKWebViewConfiguration()
@@ -37,20 +38,28 @@ struct WebView: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> WKWebView {
-        configuration.preferences.javaScriptCanOpenWindowsAutomatically = false
-        configuration.selectionGranularity = .character
+        configuration.selectionGranularity = .dynamic
         
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.navigationDelegate = context.coordinator
-        
-        webView.scrollView.isScrollEnabled = true
-        webView.scrollView.showsVerticalScrollIndicator = false
-        webView.scrollView.showsHorizontalScrollIndicator = false
         
         return webView
     }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        uiView.loadHTMLString(htmlContent, baseURL: baseURL)
+        let htmlWithCSS = """
+                <html>
+                <head>
+                <style>
+                \(cssContent)
+                </style>
+                </head>
+                <body>
+                \(htmlContent)
+                </body>
+                </html>
+                """
+        
+        uiView.loadHTMLString(htmlWithCSS, baseURL: baseURL)
     }
 }

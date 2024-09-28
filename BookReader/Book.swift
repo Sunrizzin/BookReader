@@ -18,14 +18,16 @@ class Book {
     var chapters: [Chapter]
     var baseURL: URL?
     var coverImageData: Data?
+    var css: String?
     
-    init(title: String, author: String, chapters: [Chapter], baseURL: URL?, coverImage: UIImage?) {
+    init(title: String, author: String, chapters: [Chapter], baseURL: URL?, coverImage: UIImage?, css: String?) {
         self.id = UUID()
         self.title = title
         self.author = author
         self.chapters = chapters
         self.baseURL = baseURL
         self.coverImageData = coverImage?.pngData()
+        self.css = css
     }
     
     var coverImage: UIImage? {

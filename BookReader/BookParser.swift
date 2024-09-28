@@ -9,38 +9,32 @@ class BookParser {
         let tempDir = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         
         do {
-            // Распаковка EPUB в временную директорию
+            // Создаем временную директорию для распаковки
             try fileManager.createDirectory(at: tempDir, withIntermediateDirectories: true, attributes: nil)
             try fileManager.unzipItem(at: epubURL, to: tempDir)
             
-            // Чтение container.xml для нахождения OPF файла
-            let containerURL = tempDir.appendingPathComponent("META-INF/container.xml")
-            let containerParser = ContainerXMLParser()
-            guard let opfRelativePath = try await containerParser.parse(url: containerURL) else {
+            // Ищем OPF файл по всем файлам во временной директории
+            guard let opfURL = findFile(withExtension: "opf", in: tempDir) else {
                 throw NSError(domain: "EPUBParserError", code: 404, userInfo: [NSLocalizedDescriptionKey: "OPF файл не найден"])
             }
-            let opfURL = tempDir.appendingPathComponent(opfRelativePath)
             
-            // Парсинг OPF файла
             let opfParser = OPFParser()
             try await opfParser.parse(url: opfURL)
             
-            // Парсим оглавление книги (NCX)
             var chapters: [Chapter] = []
-            if let ncxPath = opfParser.manifest["ncx"] {
-                let ncxURL = opfURL.deletingLastPathComponent().appendingPathComponent(ncxPath)
+            
+            // Ищем NCX файл в структуре
+            if let ncxURL = findFile(withExtension: "ncx", in: tempDir) {
                 let ncxParser = NCXParser()
                 try await ncxParser.parse(url: ncxURL)
-                let orderedChapters = ncxParser.flattenTOC()  // Главы из NCX файла
+                let orderedChapters = ncxParser.flattenTOC()
                 
-                // Используем NCX для получения названий глав
                 for navPoint in orderedChapters {
                     if let href = opfParser.manifest.values.first(where: { normalizePath($0) == normalizePath(navPoint.contentSrc) }) {
                         let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
                         let content = try String(contentsOf: chapterURL, encoding: .utf8)
                         let baseURL = chapterURL.deletingLastPathComponent()
                         
-                        // Добавляем главу с правильным названием
                         let chapter = Chapter(title: navPoint.label, content: content, baseURL: baseURL)
                         chapters.append(chapter)
                     } else {
@@ -48,24 +42,32 @@ class BookParser {
                     }
                 }
             } else {
-                print("NCX файл не найден в манифесте OPF, попробую использовать spine")
+                print("NCX файл не найден, попробуем использовать spine")
                 
-                // Если NCX не найден, используем структуру spine для создания оглавления
                 for idref in opfParser.spine {
                     if let href = opfParser.manifest[idref] {
                         let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
-                        let content = try String(contentsOf: chapterURL, encoding: .utf8)
-                        let title = href.components(separatedBy: "/").last ?? "Без названия"
-                        let baseURL = chapterURL.deletingLastPathComponent()
                         
-                        // Добавляем главу в список
-                        let chapter = Chapter(title: title, content: content, baseURL: baseURL)
-                        chapters.append(chapter)
+                        // Выводим путь к главе в консоль для проверки
+                        print("Читаем файл главы по пути: \(chapterURL.path)")
+                        
+                        do {
+                            // Пробуем прочитать файл с явной кодировкой UTF-8
+                            let content = try String(contentsOf: chapterURL, encoding: .utf8)
+                            
+                            let title = href.components(separatedBy: "/").last ?? "Без названия"
+                            let baseURL = chapterURL.deletingLastPathComponent()
+                            
+                            // Добавляем главу в список
+                            let chapter = Chapter(title: title, content: content, baseURL: baseURL)
+                            chapters.append(chapter)
+                        } catch {
+                            print("Ошибка чтения содержимого главы: \(error.localizedDescription)")
+                        }
                     }
                 }
             }
             
-            // Парсинг обложки (если есть)
             var coverImage: UIImage? = nil
             if let coverItemID = opfParser.coverItemID, let coverPath = opfParser.manifest[coverItemID] {
                 let coverURL = opfURL.deletingLastPathComponent().appendingPathComponent(coverPath)
@@ -78,6 +80,17 @@ class BookParser {
                 print("Обложка не найдена в OPF метаданных")
             }
             
+            var cssContent: String = ""
+            if let cssURL = findFile(withExtension: "css", in: tempDir) {
+                do {
+                    cssContent = try String(contentsOf: cssURL, encoding: .utf8)
+                } catch {
+                    print("Не удалось прочитать CSS файл: \(error.localizedDescription)")
+                }
+            } else {
+                print("CSS файл не найден")
+            }
+            
             let baseURL = opfURL.deletingLastPathComponent()
             
             return Book(
@@ -85,15 +98,27 @@ class BookParser {
                 author: opfParser.metadata["creator"] ?? "Unknown author",
                 chapters: chapters,
                 baseURL: baseURL,
-                coverImage: coverImage
+                coverImage: coverImage,
+                css: cssContent
             )
         } catch {
-            // Обработка ошибок при парсинге
             throw NSError(domain: "EPUBParserError", code: 500, userInfo: [NSLocalizedDescriptionKey: "Ошибка парсинга EPUB: \(error.localizedDescription)"])
         }
     }
     
-    // Утилита для нормализации пути (убирает фрагменты)
+    // Функция для поиска файла с нужным расширением
+    private func findFile(withExtension ext: String, in directory: URL) -> URL? {
+        let fileManager = FileManager.default
+        if let enumerator = fileManager.enumerator(at: directory, includingPropertiesForKeys: nil) {
+            for case let fileURL as URL in enumerator {
+                if fileURL.pathExtension.lowercased() == ext.lowercased() {
+                    return fileURL
+                }
+            }
+        }
+        return nil
+    }
+    
     private func normalizePath(_ path: String) -> String {
         return path.components(separatedBy: "#").first ?? path
     }

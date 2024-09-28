@@ -12,12 +12,17 @@ struct ReaderView: View {
     var book: Book
     @State private var selectedChapterIndex = 0
     @State private var errorMessage: ErrorMessage?
+    @State private var isLoading = false
+    @State private var loadError: Error?
     
     var body: some View {
         VStack {
-            WebView(htmlContent: book.chapters[selectedChapterIndex].content, baseURL: book.chapters[selectedChapterIndex].baseURL)
+            WebView(
+                htmlContent: book.chapters[selectedChapterIndex].content,
+                baseURL: book.chapters[selectedChapterIndex].baseURL,
+                cssContent: book.css ?? ""
+            )
                 .edgesIgnoringSafeArea(.bottom)
-                .padding(.horizontal)
                 .navigationTitle(book.chapters[selectedChapterIndex].title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
@@ -36,19 +41,18 @@ struct ReaderView: View {
                         }
                     }
                     
-                    // Добавляем нижний тулбар с кнопками "Предыдущая" и "Следующая"
                     ToolbarItemGroup(placement: .bottomBar) {
                         Button(action: previousChapter) {
                             Label("Previous", systemImage: "arrow.left")
                         }
-                        .disabled(selectedChapterIndex == 0) // Отключаем кнопку на первой главе
+                        .disabled(selectedChapterIndex == 0)
                         
                         Spacer()
                         
                         Button(action: nextChapter) {
                             Label("Next", systemImage: "arrow.right")
                         }
-                        .disabled(selectedChapterIndex == book.chapters.count - 1) // Отключаем кнопку на последней главе
+                        .disabled(selectedChapterIndex == book.chapters.count - 1)
                     }
                 }
         }
@@ -84,6 +88,7 @@ struct ReaderView: View {
             Chapter(title: "Chapter 2", content: "<html><body><h1>Chapter 2</h1></body></html>", baseURL: URL(fileURLWithPath: ""))
         ],
         baseURL: nil,
-        coverImage: nil
+        coverImage: nil,
+        css: ""
     ))
 }
