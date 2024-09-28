@@ -1,10 +1,3 @@
-//
-//  WebView.swift
-//  BookReader
-//
-//  Created by Sunrizz on 27.09.2024.
-//
-
 import SwiftUI
 import WebKit
 
@@ -12,11 +5,12 @@ struct WebView: UIViewRepresentable {
     var htmlContent: String
     var baseURL: URL?
     var cssContent: String
+    var colorScheme: ColorScheme
+    @Binding var fontSize: Int
     
     // Возможность передать конфигурацию
     var configuration: WKWebViewConfiguration = WKWebViewConfiguration()
     
-    // Класс делегата для отслеживания ошибок и прогресса
     class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebView
         
@@ -24,12 +18,11 @@ struct WebView: UIViewRepresentable {
             self.parent = parent
         }
         
-        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            print("Error loading web content: \(error.localizedDescription)")
-        }
-        
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             print("Finished loading content")
+            
+            // Применяем размер шрифта после завершения загрузки HTML
+         //   parent.applyFontSize(to: webView)
         }
     }
     
@@ -47,11 +40,24 @@ struct WebView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: WKWebView, context: Context) {
+        let additionalCSS = colorScheme == .dark ? """
+                    body {
+                        background-color: black;
+                        color: white;
+                    }
+                """ : """
+                    body {
+                        background-color: white;
+                        color: black;
+                    }
+                """
+        
         let htmlWithCSS = """
                 <html>
                 <head>
                 <style>
                 \(cssContent)
+                \(additionalCSS)
                 </style>
                 </head>
                 <body>
@@ -60,6 +66,22 @@ struct WebView: UIViewRepresentable {
                 </html>
                 """
         
+        // Загружаем HTML с CSS
         uiView.loadHTMLString(htmlWithCSS, baseURL: baseURL)
+        
+        // Применяем размер шрифта при каждом обновлении
+        applyFontSize(to: uiView)
+    }
+    
+    // Функция для изменения размера шрифта
+    func applyFontSize(to webView: WKWebView) {
+        let fontSizeJS = "document.body.style.fontSize='\(fontSize)%';"
+        webView.evaluateJavaScript(fontSizeJS) { (result, error) in
+            if let error = error {
+                print("Failed to apply font size: \(error.localizedDescription)")
+            } else {
+                print("Font size applied: \(self.fontSize)%")
+            }
+        }
     }
 }
