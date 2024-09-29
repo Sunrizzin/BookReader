@@ -14,7 +14,6 @@ struct ReaderView: View {
     @State private var errorMessage: ErrorMessage?
     @State private var isLoading = false
     @State private var loadError: Error?
-    @State private var fontSize: Int = 100
     
     var body: some View {
         VStack {
@@ -22,8 +21,7 @@ struct ReaderView: View {
                 htmlContent: book.chapters[selectedChapterIndex].content,
                 baseURL: book.chapters[selectedChapterIndex].baseURL,
                 cssContent: book.css ?? "",
-                colorScheme: .dark,
-                fontSize: $fontSize
+                colorScheme: .dark
             )
             .edgesIgnoringSafeArea(.bottom)
             .navigationTitle(book.chapters[selectedChapterIndex].title)
@@ -45,15 +43,6 @@ struct ReaderView: View {
                 }
                 
                 ToolbarItemGroup(placement: .bottomBar) {
-                    
-                    Button(action: decreaseFontSize) {
-                        Image(systemName: "textformat.size.smaller")
-                    }
-                    
-                    Button(action: increaseFontSize) {
-                        Image(systemName: "textformat.size.larger")
-                    }
-                    
                     Spacer()
                     
                     Button(action: previousChapter) {
@@ -79,17 +68,6 @@ struct ReaderView: View {
         }
     }
     
-    private func increaseFontSize() {
-        fontSize += 10
-    }
-    
-    private func decreaseFontSize() {
-        if fontSize > 50 {
-            fontSize -= 10
-        }
-    }
-    
-    // Функции для переключения глав
     private func previousChapter() {
         if selectedChapterIndex > 0 {
             selectedChapterIndex -= 1

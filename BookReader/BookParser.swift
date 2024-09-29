@@ -9,11 +9,9 @@ class BookParser {
         let tempDir = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         
         do {
-            // Создаем временную директорию для распаковки
             try fileManager.createDirectory(at: tempDir, withIntermediateDirectories: true, attributes: nil)
             try fileManager.unzipItem(at: epubURL, to: tempDir)
             
-            // Ищем OPF файл по всем файлам во временной директории
             guard let opfURL = findFile(withExtension: "opf", in: tempDir) else {
                 throw NSError(domain: "EPUBParserError", code: 404, userInfo: [NSLocalizedDescriptionKey: "OPF файл не найден"])
             }
@@ -23,7 +21,6 @@ class BookParser {
             
             var chapters: [Chapter] = []
             
-            // Ищем NCX файл в структуре
             if let ncxURL = findFile(withExtension: "ncx", in: tempDir) {
                 let ncxParser = NCXParser()
                 try await ncxParser.parse(url: ncxURL)
@@ -48,17 +45,14 @@ class BookParser {
                     if let href = opfParser.manifest[idref] {
                         let chapterURL = opfURL.deletingLastPathComponent().appendingPathComponent(href)
                         
-                        // Выводим путь к главе в консоль для проверки
                         print("Читаем файл главы по пути: \(chapterURL.path)")
                         
                         do {
-                            // Пробуем прочитать файл с явной кодировкой UTF-8
                             let content = try String(contentsOf: chapterURL, encoding: .utf8)
                             
                             let title = href.components(separatedBy: "/").last ?? "Без названия"
                             let baseURL = chapterURL.deletingLastPathComponent()
                             
-                            // Добавляем главу в список
                             let chapter = Chapter(title: title, content: content, baseURL: baseURL)
                             chapters.append(chapter)
                         } catch {
@@ -106,7 +100,6 @@ class BookParser {
         }
     }
     
-    // Функция для поиска файла с нужным расширением
     private func findFile(withExtension ext: String, in directory: URL) -> URL? {
         let fileManager = FileManager.default
         if let enumerator = fileManager.enumerator(at: directory, includingPropertiesForKeys: nil) {

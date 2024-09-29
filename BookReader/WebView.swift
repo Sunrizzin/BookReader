@@ -6,9 +6,7 @@ struct WebView: UIViewRepresentable {
     var baseURL: URL?
     var cssContent: String
     var colorScheme: ColorScheme
-    @Binding var fontSize: Int
     
-    // Возможность передать конфигурацию
     var configuration: WKWebViewConfiguration = WKWebViewConfiguration()
     
     class Coordinator: NSObject, WKNavigationDelegate {
@@ -20,9 +18,6 @@ struct WebView: UIViewRepresentable {
         
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             print("Finished loading content")
-            
-            // Применяем размер шрифта после завершения загрузки HTML
-         //   parent.applyFontSize(to: webView)
         }
     }
     
@@ -66,22 +61,6 @@ struct WebView: UIViewRepresentable {
                 </html>
                 """
         
-        // Загружаем HTML с CSS
         uiView.loadHTMLString(htmlWithCSS, baseURL: baseURL)
-        
-        // Применяем размер шрифта при каждом обновлении
-        applyFontSize(to: uiView)
-    }
-    
-    // Функция для изменения размера шрифта
-    func applyFontSize(to webView: WKWebView) {
-        let fontSizeJS = "document.body.style.fontSize='\(fontSize)%';"
-        webView.evaluateJavaScript(fontSizeJS) { (result, error) in
-            if let error = error {
-                print("Failed to apply font size: \(error.localizedDescription)")
-            } else {
-                print("Font size applied: \(self.fontSize)%")
-            }
-        }
     }
 }

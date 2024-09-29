@@ -12,22 +12,18 @@ class OPFParser: NSObject, XMLParserDelegate {
     var coverItemID: String?
     var translator: String?
     
-    // Асинхронный метод парсинга с использованием Task.detached
     func parse(url: URL) async throws {
         return try await withCheckedThrowingContinuation { continuation in
             Task.detached { [weak self] in
                 guard let self = self else { return }
                 
-                // Проверка возможности создания XMLParser
                 guard let parser = XMLParser(contentsOf: url) else {
                     continuation.resume(throwing: NSError(domain: "OPFParserError", code: 1, userInfo: [NSLocalizedDescriptionKey: "Не удалось создать XMLParser"]))
                     return
                 }
                 
-                // Устанавливаем делегат
                 parser.delegate = self
                 
-                // Парсинг файла
                 if parser.parse() {
                     continuation.resume()
                 } else {
@@ -37,25 +33,21 @@ class OPFParser: NSObject, XMLParserDelegate {
         }
     }
     
-    // Начало элемента
     func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
         currentElement = elementName
         
-        // Обработка элемента item для заполнения манифеста
         if elementName == "item" {
             if let id = attributeDict["id"], let href = attributeDict["href"] {
                 manifest[id] = href
             }
         }
         
-        // Обработка элемента itemref для заполнения spine
         if elementName == "itemref" {
             if let idref = attributeDict["idref"] {
                 spine.append(idref)
             }
         }
         
-        // Обработка элемента meta для определения обложки или переводчика
         if elementName == "meta" {
             if let name = attributeDict["name"], name == "cover" {
                 coverItemID = attributeDict["content"]
@@ -64,19 +56,14 @@ class OPFParser: NSObject, XMLParserDelegate {
             }
         }
         
-        // Очищаем tempValue для нового элемента
         tempValue = ""
     }
     
-    // Найдены символы между открывающим и закрывающим тегами
     func parser(_ parser: XMLParser, foundCharacters string: String) {
-        // Удаляем лишние пробелы и символы новой строки
         tempValue += string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
-    // Завершение элемента
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-        // Обрабатываем метаданные
         switch elementName {
         case "dc:title":
             metadata["title"] = tempValue
@@ -101,12 +88,10 @@ class OPFParser: NSObject, XMLParserDelegate {
             break
         }
         
-        // Сбрасываем текущий элемент и временное значение
         currentElement = ""
         tempValue = ""
     }
     
-    // Обработка ошибок парсинга
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
         print("Ошибка парсинга: \(parseError.localizedDescription)")
     }
